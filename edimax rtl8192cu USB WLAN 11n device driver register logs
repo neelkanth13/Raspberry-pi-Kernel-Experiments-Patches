@@ -1,0 +1,67 @@
+pi@raspberrypi:~$ sudo dmesg -c | grep Neel
+[    0.170012] Neel: net/core/dev.c: [register_netdevice][10226] [START]
+[    0.170032] Neel: net/core/dev.c: [register_netdevice][10250]: Device Name: lo
+[    0.170955] Neel: net/core/dev.c: [register_netdevice][10378]: Net Device Registration Complete
+[    0.170975] Neel: net/core/dev.c: [register_netdevice][10380] [END]
+[    5.178399] Neel: net/core/dev.c: [register_netdevice][10226] [START]
+[    5.178451] Neel: net/core/dev.c: [register_netdevice][10250]: Device Name: eth0
+[    5.179347] Neel: net/core/dev.c: [register_netdevice][10378]: Net Device Registration Complete
+[    5.179369] Neel: net/core/dev.c: [register_netdevice][10380] [END]
+[   10.246553] Neel: net/core/dev.c: [register_netdevice][10226] [START]
+[   10.246606] Neel: net/core/dev.c: [register_netdevice][10250]: Device Name: wlan0
+[   10.248256] Neel: net/core/dev.c: [register_netdevice][10378]: Net Device Registration Complete
+[   10.248290] Neel: net/core/dev.c: [register_netdevice][10380] [END]
+[   10.953963] Neel: net/core/dev.c: [register_netdevice][10226] [START]
+[   10.954005] Neel: net/core/dev.c: [register_netdevice][10250]: Device Name: lo
+[   10.955180] Neel: net/core/dev.c: [register_netdevice][10378]: Net Device Registration Complete
+[   10.955214] Neel: net/core/dev.c: [register_netdevice][10380] [END]
+[   12.169889] Neel: drivers/usb/core/driver.c: [usb_register_driver][1051]: usbcore: Register the new interface driver rtl8192cu
+[   12.169933] Neel: drivers/base/driver.c: [driver_register][165]: Device Driver Name: rtl8192cu Bus Name: usb
+[   12.169956] Neel: drivers/base/driver.c: [driver_register][179]: Device Driver Name: rtl8192cu Bus Name: usb.. Driver not registered yet. Hence, add it to the BUS
+[   12.169990] Neel: drivers/base/dd.c: [driver_attach][1237]: Device Driver Name: rtl8192cu Bus Name: usb. walk the list of device in the bus &try to match the driver with each device.
+[   12.170058] Neel: drivers/base/dd.c: [__driver_attach][1203]: Start Probing for the Device Hardware.Driver Name: rtl8192cu Driver Bus Name: usb
+[   12.170079] Neel: drivers/base/dd.c: [driver_probe_device][806]: bus: 'usb' Attempting to match device 1-1.3:1.0 with driver rtl8192cu..
+[   12.170110] Neel: drivers/base/dd.c: [really_probe][574]: bus: 'usb' probing driver rtl8192cu with device 1-1.3:1.0
+[   12.170195] rtl8192cu: Neel: drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c: [rtl8192cu_probe][373]: rtl8192cu probe callback
+[   12.170214] rtl8192cu: Neel: drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c: [rtl8192cu_probe][375]: Vendor ID: 0x7392 Product ID: 0x7811
+[   12.170247] rtl_usb: Neel: drivers/net/wireless/realtek/rtlwifi/usb.c: [rtl_usb_probe][1015] [ENTER]
+[   12.170263] rtl_usb: Neel: include/net/mac80211.h: [ieee80211_alloc_hw][4304]
+[   12.170277] Neel: net/mac80211/main.c: [ieee80211_alloc_hw_nm][552]: Allocate Memory for driver's Private Data
+[   12.868817] rtl_usb: Neel: drivers/net/wireless/realtek/rtlwifi/usb.c: [rtl_usb_probe][1080] ieee80211_register_hw [START]
+[   12.868836] Neel: net/mac80211/main.c: [ieee80211_register_hw][918] [ENTER]
+[   12.870157] Neel: net/mac80211/main.c: [ieee80211_register_hw][1304] wiphy_register START
+[   12.872298] Neel: net/mac80211/main.c: [ieee80211_register_hw][1310] wiphy_register SUCCESS
+[   12.872960] Neel: net/mac80211/iface.c: [ieee80211_if_add][1904] [ENTER]
+[   12.872987] Neel: net/mac80211/iface.c: [ieee80211_if_add][1941]
+[   12.873046] Neel: net/mac80211/iface.c: [ieee80211_if_setup][1316]
+[   12.873112] cfg80211: Neel: net/wireless/core.c: [cfg80211_register_netdevice][1342] [ENTER]
+[   12.873131] cfg80211: Neel: net/wireless/core.c: [cfg80211_register_netdevice][1357] At this point, the mac80211 device register to netdevice[START].
+[   12.873149] Neel: net/core/dev.c: [register_netdevice][10226] [START]
+[   12.873167] Neel: net/core/dev.c: [register_netdevice][10250]: Device Name: wlan1
+[   12.874512] Neel: net/core/dev.c: [register_netdevice][10378]: Net Device Registration Complete
+[   12.874542] Neel: net/core/dev.c: [register_netdevice][10380] [END]
+[   12.874558] cfg80211: Neel: net/wireless/core.c: [cfg80211_register_netdevice][1364] At this point, the mac80211 device register to netdevice[SUCCESS].
+[   12.881315] cfg80211: Neel: net/wireless/core.c: [cfg80211_register_netdevice][1370] [ENTER]
+[   12.881356] Neel: net/mac80211/iface.c: [ieee80211_if_add][2082] [EXIT]
+[   12.881380] Neel: net/mac80211/main.c: [ieee80211_register_hw][1349] [EXIT]
+[   12.881397] rtl_usb: Neel: drivers/net/wireless/realtek/rtlwifi/usb.c: [rtl_usb_probe][1089] ieee80211_register_hw (Soft mac80211 (rtlwifi) HW Registration) [SUCCESS]
+[   12.881415] rtl_usb: Neel: drivers/net/wireless/realtek/rtlwifi/usb.c: [rtl_usb_probe][1097] [EXIT]
+[   12.881451] Neel: drivers/base/dd.c: [call_driver_probe][519]: bus: 'usb' matched device 1-1.3:1.0 with driver rtl8192cu
+[   12.881575] Neel: drivers/base/dd.c: [__driver_probe_device][778]: bus: 'usb' matched device 1-1.3:1.0 with driver rtl8192cu
+[   12.881601] Neel: drivers/base/dd.c: [__driver_attach][1216]: Driver matches with the Device.Driver Name: rtl8192cu Driver Bus Name: usb
+[   12.881687] Neel: drivers/base/bus.c: [bus_add_driver][646]: Device Driver Name: rtl8192cu Bus Name: usb.. Driver added to the bus
+[   12.881746] Neel: drivers/usb/core/driver.c: [usb_register_driver][1078]: usbcore: registered new interface driver rtl8192cu Success
+[   13.847485] Neel: net/mac80211/iface.c: [ieee80211_do_open][1043]
+[   13.847512] Neel: net/mac80211/driver-ops.c: [drv_start][14]
+[   13.847571] Neel: net/mac80211/driver-ops.c: [drv_start][26]
+[   14.641858] Neel: net/mac80211/driver-ops.c: [drv_add_interface][63]
+[   14.641900] rtlwifi: Neel: drivers/net/wireless/realtek/rtlwifi/core.c: [rtl_op_add_interface][218]
+[   14.657125] Neel: net/mac80211/iface.c: [ieee80211_open][365]
+[   18.148841] Neel: net/core/dev.c: [register_netdevice][10226] [START]
+[   18.148866] Neel: net/core/dev.c: [register_netdevice][10250]: Device Name: lo
+[   18.149358] Neel: net/core/dev.c: [register_netdevice][10378]: Net Device Registration Complete
+[   18.149379] Neel: net/core/dev.c: [register_netdevice][10380] [END]
+[   19.249743] Neel: net/core/dev.c: [register_netdevice][10226] [START]
+[   19.249789] Neel: net/core/dev.c: [register_netdevice][10250]: Device Name: lo
+[   19.250409] Neel: net/core/dev.c: [register_netdevice][10378]: Net Device Registration Complete
+[   19.250436] Neel: net/core/dev.c: [register_netdevice][10380] [END]
