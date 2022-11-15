@@ -1,0 +1,579 @@
+diff --git a/drivers/base/bus.c b/drivers/base/bus.c
+index d171535fc18f55c7c79c9f7919d5c2cfc9fd34d5..78f8fa1d3c2817363e2c1ed719017eb79aaafcac 100644
+--- a/drivers/base/bus.c
++++ b/drivers/base/bus.c
+@@ -642,6 +642,13 @@ int bus_add_driver(struct device_driver *drv)
+ 		}
+ 	}
+ 
++    if (strncmp(drv->name, "rtl8192cu", sizeof("rtl8192cu")) == 0) {
++        pr_info("Neel: %s: [%s][%d]: Device Driver Name: %s"
++                " Bus Name: %s.. Driver added to the bus\n",
++                __FILE__, __func__, __LINE__,
++                drv->name, bus->name);
++    }
++
+ 	return 0;
+ 
+ out_del_list:
+diff --git a/drivers/base/dd.c b/drivers/base/dd.c
+index 63cc0111881094dfa9b93823113e1f03b7577914..5afae67a2e56ecf0db7b29e12a14fec538088083 100644
+--- a/drivers/base/dd.c
++++ b/drivers/base/dd.c
+@@ -512,8 +512,18 @@ static int call_driver_probe(struct device *dev, struct device_driver *drv)
+ 
+ 	if (dev->bus->probe)
+ 		ret = dev->bus->probe(dev);
+-	else if (drv->probe)
+-		ret = drv->probe(dev);
++    else if (drv->probe) {
++        ret = drv->probe(dev);
++
++        if (strncmp(drv->name, "rtl8192cu", sizeof("rtl8192cu")) == 0) {
++            pr_info("Neel: %s: [%s][%d]: "
++                    "bus: '%s' matched device %s with driver %s\n"
++                    "At this point, invoke the registered probe "
++                    "callback of the driver\n",
++                    __FILE__, __func__, __LINE__,
++                    drv->bus->name , dev_name(dev), drv->name);
++        }
++    }
+ 
+ 	switch (ret) {
+ 	case 0:
+@@ -559,6 +569,14 @@ static int really_probe(struct device *dev, struct device_driver *drv)
+ 
+ 	pr_debug("bus: '%s': %s: probing driver %s with device %s\n",
+ 		 drv->bus->name, __func__, drv->name, dev_name(dev));
++
++    if (strncmp(drv->name, "rtl8192cu", sizeof("rtl8192cu")) == 0) {
++        pr_info("Neel: %s: [%s][%d]: "
++                "bus: '%s' probing driver %s with device %s\n",
++                __FILE__, __func__, __LINE__,
++                drv->bus->name , drv->name, dev_name(dev));
++    }
++
+ 	if (!list_empty(&dev->devres_head)) {
+ 		dev_crit(dev, "Resources present before probing\n");
+ 		ret = -EBUSY;
+@@ -739,6 +757,7 @@ static int __driver_probe_device(struct device_driver *drv, struct device *dev)
+ 	pr_debug("bus: '%s': %s: matched device %s with driver %s\n",
+ 		 drv->bus->name, __func__, dev_name(dev), drv->name);
+ 
++
+ 	pm_runtime_get_suppliers(dev);
+ 	if (dev->parent)
+ 		pm_runtime_get_sync(dev->parent);
+@@ -754,6 +773,13 @@ static int __driver_probe_device(struct device_driver *drv, struct device *dev)
+ 		pm_runtime_put(dev->parent);
+ 
+ 	pm_runtime_put_suppliers(dev);
++
++    if (strncmp(drv->name, "rtl8192cu", sizeof("rtl8192cu")) == 0) {
++        pr_info("Neel: %s: [%s][%d]: "
++                "bus: '%s' matched device %s with driver %s\n",
++                __FILE__, __func__, __LINE__,
++                drv->bus->name , dev_name(dev), drv->name);
++    } 
+ 	return ret;
+ }
+ 
+@@ -776,6 +802,13 @@ static int driver_probe_device(struct device_driver *drv, struct device *dev)
+ 	int trigger_count = atomic_read(&deferred_trigger_count);
+ 	int ret;
+ 
++    if (strncmp(drv->name, "rtl8192cu", sizeof("rtl8192cu")) == 0) {
++        pr_info("Neel: %s: [%s][%d]: "
++                "bus: '%s' Attempting to match device %s with driver %s..\n",
++                __FILE__, __func__, __LINE__,
++                drv->bus->name , dev_name(dev), drv->name);
++    }
++
+ 	atomic_inc(&probe_count);
+ 	ret = __driver_probe_device(drv, dev);
+ 	if (ret == -EPROBE_DEFER || ret == EPROBE_DEFER) {
+@@ -1118,6 +1151,14 @@ static int __driver_attach(struct device *dev, void *data)
+ 		return 0;
+ 	} else if (ret == -EPROBE_DEFER) {
+ 		dev_dbg(dev, "Device match requests probe deferral\n");
++
++        if (strncmp(drv->name, "rtl8192cu", sizeof("rtl8192cu")) == 0) {
++            pr_info("Neel: %s: [%s][%d]: Device match requests probe deferral "
++                    "Driver Name: %s Driver Bus Name: %s\n",
++                    __FILE__, __func__, __LINE__,
++                    drv->name, drv->bus->name);
++        } 
++
+ 		dev->can_match = true;
+ 		driver_deferred_probe_add(dev);
+ 		/*
+@@ -1126,7 +1167,13 @@ static int __driver_attach(struct device *dev, void *data)
+ 		 */
+ 		return 0;
+ 	} else if (ret < 0) {
+-		dev_dbg(dev, "Bus failed to match device: %d\n", ret);
++        dev_dbg(dev, "Bus failed to match device: %d\n", ret);
++        if (strncmp(drv->name, "rtl8192cu", sizeof("rtl8192cu")) == 0) {
++            pr_info("Neel: %s: [%s][%d]: Bus failed to match device "
++                    "Driver Name: %s Driver Bus Name: %s\n",
++                    __FILE__, __func__, __LINE__,
++                    drv->name, drv->bus->name);
++        }
+ 		return ret;
+ 	} /* ret > 0 means positive match */
+ 
+@@ -1151,10 +1198,27 @@ static int __driver_attach(struct device *dev, void *data)
+ 		return 0;
+ 	}
+ 
++    if (strncmp(drv->name, "rtl8192cu", sizeof("rtl8192cu")) == 0) {
++        if (strncmp(drv->name, "rtl8192cu", sizeof("rtl8192cu")) == 0) {
++            pr_info("Neel: %s: [%s][%d]: Start Probing for the Device Hardware."
++                    "Driver Name: %s Driver Bus Name: %s\n",
++                    __FILE__, __func__, __LINE__,
++                    drv->name, drv->bus->name);
++        }
++    }    
++
+ 	__device_driver_lock(dev, dev->parent);
+ 	driver_probe_device(drv, dev);
+ 	__device_driver_unlock(dev, dev->parent);
+ 
++    if (strncmp(drv->name, "rtl8192cu", sizeof("rtl8192cu")) == 0) {
++        if (strncmp(drv->name, "rtl8192cu", sizeof("rtl8192cu")) == 0) {
++            pr_info("Neel: %s: [%s][%d]: Driver matches with the Device."
++                    "Driver Name: %s Driver Bus Name: %s\n",
++                    __FILE__, __func__, __LINE__,
++                    drv->name, drv->bus->name);
++        }
++    }    
+ 	return 0;
+ }
+ 
+@@ -1169,6 +1233,14 @@ static int __driver_attach(struct device *dev, void *data)
+  */
+ int driver_attach(struct device_driver *drv)
+ {
++    if (strncmp(drv->name, "rtl8192cu", sizeof("rtl8192cu")) == 0) {
++        pr_info("Neel: %s: [%s][%d]: Device Driver Name: %s"
++                " Bus Name: %s. walk the list of device in the bus &"
++                "try to match the driver with each device.\n",
++                __FILE__, __func__, __LINE__,
++                drv->name, drv->bus->name);
++    }
++    
+ 	return bus_for_each_dev(drv->bus, NULL, drv, __driver_attach);
+ }
+ EXPORT_SYMBOL_GPL(driver_attach);
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index 8c0d33e182fd5b0781aa7ba5e811da418fee168a..f3188c9dcb26ce0826be46373b32f80bd9d2b6eb 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -161,6 +161,13 @@ int driver_register(struct device_driver *drv)
+ 		pr_warn("Driver '%s' needs updating - please use "
+ 			"bus_type methods\n", drv->name);
+ 
++    if (strncmp(drv->name, "rtl8192cu", sizeof("rtl8192cu")) == 0) {
++        pr_info("Neel: %s: [%s][%d]: Device Driver Name: %s"
++                " Bus Name: %s\n",
++                __FILE__, __func__, __LINE__,
++                drv->name, drv->bus->name);
++    }    
++
+ 	other = driver_find(drv->name, drv->bus);
+ 	if (other) {
+ 		pr_err("Error: Driver '%s' is already registered, "
+@@ -168,6 +175,14 @@ int driver_register(struct device_driver *drv)
+ 		return -EBUSY;
+ 	}
+ 
++    if (strncmp(drv->name, "rtl8192cu", sizeof("rtl8192cu")) == 0) {
++        pr_info("Neel: %s: [%s][%d]: Device Driver Name: %s"
++                " Bus Name: %s.. Driver not registered yet."
++                " Hence, add it to the BUS\n",
++                __FILE__, __func__, __LINE__,
++                drv->name, drv->bus->name);
++    }
++
+ 	ret = bus_add_driver(drv);
+ 	if (ret)
+ 		return ret;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/core.c b/drivers/net/wireless/realtek/rtlwifi/core.c
+index 8efe2f5e5b9f32a8b9f99d6a6576782aff017112..32ed5b4a599d6290d9ed79126fc16515c89fc46a 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/core.c
++++ b/drivers/net/wireless/realtek/rtlwifi/core.c
+@@ -215,6 +215,8 @@ static int rtl_op_add_interface(struct ieee80211_hw *hw,
+ 	int err = 0;
+ 	u8 retry_limit = 0x30;
+ 
++    pr_info("Neel: %s: [%s][%d]", __FILE__, __func__, __LINE__);
++
+ 	if (mac->vif) {
+ 		rtl_dbg(rtlpriv, COMP_ERR, DBG_WARNING,
+ 			"vif has been set!! mac->vif = 0x%p\n", mac->vif);
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
+index b53daf1b29f73f5fae766516fcba82de238b246a..bb99b07265f24c98231f5766643da93495e24692 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
+@@ -370,6 +370,11 @@ MODULE_DEVICE_TABLE(usb, rtl8192c_usb_ids);
+ static int rtl8192cu_probe(struct usb_interface *intf,
+ 			   const struct usb_device_id *id)
+ {
++    pr_info("Neel: %s: [%s][%d]: rtl8192cu probe callback\n",
++            __FILE__, __func__, __LINE__);
++    pr_info("Neel: %s: [%s][%d]: Vendor ID: 0x%x Product ID: 0x%x\n",
++            __FILE__, __func__, __LINE__, id->idVendor, id->idProduct);
++
+ 	return rtl_usb_probe(intf, id, &rtl92cu_hal_cfg);
+ }
+ 
+diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
+index a8eebafb9a7ee2b5a7b813c537c9a3a3384ec2b5..f9ad597e8dfa1b97e1e12522a8b0718400de6d78 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/usb.c
++++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
+@@ -1011,12 +1011,17 @@ int rtl_usb_probe(struct usb_interface *intf,
+ 	struct usb_device	*udev;
+ 	struct rtl_usb_priv *usb_priv;
+ 
++    pr_info("\n\n##########################################################\n");
++    pr_info("Neel: %s: [%s][%d] [ENTER]\n", 
++            __FILE__, __func__, __LINE__);
++
+ 	hw = ieee80211_alloc_hw(sizeof(struct rtl_priv) +
+ 				sizeof(struct rtl_usb_priv), &rtl_ops);
+ 	if (!hw) {
+ 		pr_warn("rtl_usb: ieee80211 alloc failed\n");
+ 		return -ENOMEM;
+ 	}
++
+ 	rtlpriv = hw->priv;
+ 	rtlpriv->hw = hw;
+ 	rtlpriv->usb_data = kcalloc(RTL_USB_MAX_RX_COUNT, sizeof(u32),
+@@ -1057,7 +1062,9 @@ int rtl_usb_probe(struct usb_interface *intf,
+ 	err = _rtl_usb_init(hw);
+ 	if (err)
+ 		goto error_out2;
++
+ 	rtl_usb_init_sw(hw);
++
+ 	/* Init mac80211 sw */
+ 	err = rtl_init_core(hw);
+ 	if (err) {
+@@ -1070,14 +1077,27 @@ int rtl_usb_probe(struct usb_interface *intf,
+ 	}
+ 	rtlpriv->cfg->ops->init_sw_leds(hw);
+ 
++    pr_info("Neel: %s: [%s][%d] ieee80211_register_hw [START]", 
++            __FILE__, __func__, __LINE__);    
++
+ 	err = ieee80211_register_hw(hw);
+ 	if (err) {
+ 		pr_err("Can't register mac80211 hw.\n");
+ 		goto error_out;
+ 	}
++
++    pr_info("Neel: %s: [%s][%d] ieee80211_register_hw "
++            "(Soft mac80211 (rtlwifi) HW Registration) [SUCCESS]", 
++            __FILE__, __func__, __LINE__);    
++
+ 	rtlpriv->mac80211.mac80211_registered = 1;
+ 
+ 	set_bit(RTL_STATUS_INTERFACE_START, &rtlpriv->status);
++
++    pr_info("Neel: %s: [%s][%d] [EXIT]\n", 
++            __FILE__, __func__, __LINE__);
++    pr_info("##########################################################\n\n");
++
+ 	return 0;
+ 
+ error_out:
+diff --git a/drivers/usb/core/driver.c b/drivers/usb/core/driver.c
+index 072968c40adeaaf204a68589c0ca2d8660adb5b7..ba1ab23fe7e759d83280b1cf68d156a65de90ca1 100644
+--- a/drivers/usb/core/driver.c
++++ b/drivers/usb/core/driver.c
+@@ -1047,6 +1047,12 @@ int usb_register_driver(struct usb_driver *new_driver, struct module *owner,
+ 	if (usb_disabled())
+ 		return -ENODEV;
+ 
++    if (strncmp(new_driver->name, "rtl8192cu", sizeof("rtl8192cu")) == 0) {
++        pr_info("Neel: %s: [%s][%d]: %s: Register the new interface driver %s\n",
++                __FILE__, __func__, __LINE__,
++                usbcore_name, new_driver->name);
++    }
++
+ 	new_driver->drvwrap.for_devices = 0;
+ 	new_driver->drvwrap.driver.name = new_driver->name;
+ 	new_driver->drvwrap.driver.bus = &usb_bus_type;
+@@ -1056,6 +1062,8 @@ int usb_register_driver(struct usb_driver *new_driver, struct module *owner,
+ 	new_driver->drvwrap.driver.mod_name = mod_name;
+ 	new_driver->drvwrap.driver.dev_groups = new_driver->dev_groups;
+ 	spin_lock_init(&new_driver->dynids.lock);
++
++    /* This is used to created a node in the USB driver circular linked list  */
+ 	INIT_LIST_HEAD(&new_driver->dynids.list);
+ 
+ 	retval = driver_register(&new_driver->drvwrap.driver);
+@@ -1066,8 +1074,11 @@ int usb_register_driver(struct usb_driver *new_driver, struct module *owner,
+ 	if (retval)
+ 		goto out_newid;
+ 
+-	pr_info("%s: registered new interface driver %s\n",
+-			usbcore_name, new_driver->name);
++    if (strncmp(new_driver->name, "rtl8192cu", sizeof("rtl8192cu")) == 0) {
++        pr_info("Neel: %s: [%s][%d]: %s: registered new interface driver %s Success\n",
++                __FILE__, __func__, __LINE__,
++                usbcore_name, new_driver->name);
++    }
+ 
+ out:
+ 	return retval;
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 618d1f427cb2761cee907d3615d19df39a6b50de..608f440bdcc7577c41363010a7c876faacc11eba 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -4301,6 +4301,8 @@ static inline
+ struct ieee80211_hw *ieee80211_alloc_hw(size_t priv_data_len,
+ 					const struct ieee80211_ops *ops)
+ {
++    pr_info("Neel: %s: [%s][%d]", __FILE__, __func__, __LINE__);
++
+ 	return ieee80211_alloc_hw_nm(priv_data_len, ops, NULL);
+ }
+ 
+diff --git a/net/core/dev.c b/net/core/dev.c
+index be51644e95dae2036abf19f233740d30dfbe6c41..dedb7c9131feb9ae8454f2aa9a7e2d199086182c 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -10223,6 +10223,8 @@ int register_netdevice(struct net_device *dev)
+ 	int ret;
+ 	struct net *net = dev_net(dev);
+ 
++    pr_info("Neel: %s: [%s][%d] [START]\n", __FILE__, __func__, __LINE__);
++
+ 	BUILD_BUG_ON(sizeof(netdev_features_t) * BITS_PER_BYTE <
+ 		     NETDEV_FEATURE_COUNT);
+ 	BUG_ON(dev_boot_phase);
+@@ -10245,6 +10247,10 @@ int register_netdevice(struct net_device *dev)
+ 	if (ret < 0)
+ 		goto out;
+ 
++    pr_info("Neel: %s: [%s][%d]: Device Name: %s",
++             __FILE__, __func__, __LINE__,
++             dev->name);
++
+ 	ret = -ENOMEM;
+ 	dev->name_node = netdev_name_node_head_alloc(dev);
+ 	if (!dev->name_node)
+@@ -10369,6 +10375,10 @@ int register_netdevice(struct net_device *dev)
+ 	    dev->rtnl_link_state == RTNL_LINK_INITIALIZED)
+ 		rtmsg_ifinfo(RTM_NEWLINK, dev, ~0U, GFP_KERNEL);
+ 
++    pr_info("Neel: %s: [%s][%d]: Net Device Registration Complete\n", 
++            __FILE__, __func__, __LINE__);
++    pr_info("Neel: %s: [%s][%d] [END]\n", __FILE__, __func__, __LINE__);
++
+ out:
+ 	return ret;
+ 
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 4fa216a108ae8f3bccd60ad14bb7c834d48bb69a..d519b74b7f4af9665368de848d1cb7e0f8959ef7 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -123,6 +123,8 @@ static struct wireless_dev *ieee80211_add_iface(struct wiphy *wiphy,
+ 	struct ieee80211_sub_if_data *sdata;
+ 	int err;
+ 
++    pr_info("Neel: %s: [%s][%d]", __FILE__, __func__, __LINE__);
++
+ 	err = ieee80211_if_add(local, name, name_assign_type, &wdev, type, params);
+ 	if (err)
+ 		return ERR_PTR(err);
+diff --git a/net/mac80211/driver-ops.c b/net/mac80211/driver-ops.c
+index 48322e45e7ddb56f82a6c762fed757368cbdeb91..ffb6e7f5736570158056838002017a8747a39fe1 100644
+--- a/net/mac80211/driver-ops.c
++++ b/net/mac80211/driver-ops.c
+@@ -11,6 +11,8 @@ int drv_start(struct ieee80211_local *local)
+ {
+ 	int ret;
+ 
++    pr_info("Neel: %s: [%s][%d]", __FILE__, __func__, __LINE__);
++
+ 	might_sleep();
+ 
+ 	if (WARN_ON(local->started))
+@@ -20,6 +22,9 @@ int drv_start(struct ieee80211_local *local)
+ 	local->started = true;
+ 	/* allow rx frames */
+ 	smp_mb();
++
++    pr_info("Neel: %s: [%s][%d]", __FILE__, __func__, __LINE__);
++
+ 	ret = local->ops->start(&local->hw);
+ 	trace_drv_return_int(local, ret);
+ 
+@@ -33,6 +38,7 @@ void drv_stop(struct ieee80211_local *local)
+ {
+ 	might_sleep();
+ 
++    pr_info("Neel: %s: [%s][%d]", __FILE__, __func__, __LINE__);
+ 	if (WARN_ON(!local->started))
+ 		return;
+ 
+@@ -54,6 +60,7 @@ int drv_add_interface(struct ieee80211_local *local,
+ {
+ 	int ret;
+ 
++    pr_info("Neel: %s: [%s][%d]", __FILE__, __func__, __LINE__);
+ 	might_sleep();
+ 
+ 	if (WARN_ON(sdata->vif.type == NL80211_IFTYPE_AP_VLAN ||
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 041859b5b71d0cdddd48d698e09e9863dcb08128..863625945a83a70fbc5d2afd3c1b5964de790e1d 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -362,6 +362,7 @@ static int ieee80211_open(struct net_device *dev)
+ 	err = ieee80211_do_open(&sdata->wdev, true);
+ 	wiphy_unlock(sdata->local->hw.wiphy);
+ 
++    pr_info("Neel: %s: [%s][%d]", __FILE__, __func__, __LINE__);
+ 	return err;
+ }
+ 
+@@ -1039,6 +1040,8 @@ int ieee80211_do_open(struct wireless_dev *wdev, bool coming_up)
+ 	int res;
+ 	u32 hw_reconf_flags = 0;
+ 
++    pr_info("Neel: %s: [%s][%d]", __FILE__, __func__, __LINE__);
++
+ 	switch (sdata->vif.type) {
+ 	case NL80211_IFTYPE_AP_VLAN: {
+ 		struct ieee80211_sub_if_data *master;
+@@ -1310,6 +1313,8 @@ static void ieee80211_if_free(struct net_device *dev)
+ 
+ static void ieee80211_if_setup(struct net_device *dev)
+ {
++    pr_info("Neel: %s: [%s][%d]", __FILE__, __func__, __LINE__);    
++
+ 	ether_setup(dev);
+ 	dev->priv_flags &= ~IFF_TX_SKB_SHARING;
+ 	dev->netdev_ops = &ieee80211_dataif_ops;
+@@ -1896,6 +1901,8 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
+ 	int ret, i;
+ 	int txqs = 1;
+ 
++    pr_info("Neel: %s: [%s][%d] [ENTER]\n", __FILE__, __func__, __LINE__);
++
+ 	ASSERT_RTNL();
+ 
+ 	if (type == NL80211_IFTYPE_P2P_DEVICE || type == NL80211_IFTYPE_NAN) {
+@@ -1931,6 +1938,7 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
+ 				txqs = IEEE80211_NUM_ACS;
+ 		}
+ 
++        pr_info("Neel: %s: [%s][%d]", __FILE__, __func__, __LINE__);    
+ 		ndev = alloc_netdev_mqs(size + txq_size,
+ 					name, name_assign_type,
+ 					if_setup, txqs, 1);
+@@ -2071,6 +2079,7 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
+ 	if (new_wdev)
+ 		*new_wdev = &sdata->wdev;
+ 
++    pr_info("Neel: %s: [%s][%d] [EXIT]\n", __FILE__, __func__, __LINE__);
+ 	return 0;
+ }
+ 
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index 5311c3cd3050d008ba33cb7109daac130a2b227d..34de9d5b8479b41e9a7aac871c4d1c42e3bb7de9 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -549,6 +549,9 @@ struct ieee80211_hw *ieee80211_alloc_hw_nm(size_t priv_data_len,
+ 	struct wiphy *wiphy;
+ 	bool use_chanctx;
+ 
++    pr_info("Neel: %s: [%s][%d]: Allocate Memory for driver's Private Data\n",
++            __FILE__, __func__, __LINE__);
++
+ 	if (WARN_ON(!ops->tx || !ops->start || !ops->stop || !ops->config ||
+ 		    !ops->add_interface || !ops->remove_interface ||
+ 		    !ops->configure_filter))
+@@ -912,6 +915,8 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ 	bool supp_ht, supp_vht, supp_he;
+ 	struct cfg80211_chan_def dflt_chandef = {};
+ 
++    pr_info("Neel: %s: [%s][%d] [ENTER]\n", __FILE__, __func__, __LINE__);
++
+ 	if (ieee80211_hw_check(hw, QUEUE_CONTROL) &&
+ 	    (local->hw.offchannel_tx_hw_queue == IEEE80211_INVAL_HW_QUEUE ||
+ 	     local->hw.offchannel_tx_hw_queue >= local->hw.queues))
+@@ -1296,10 +1301,15 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ 		local->sband_allocated |= BIT(band);
+ 	}
+ 
++    pr_info("Neel: %s: [%s][%d] wiphy_register START\n", 
++            __FILE__, __func__, __LINE__);    
+ 	result = wiphy_register(local->hw.wiphy);
+ 	if (result < 0)
+ 		goto fail_wiphy_register;
+ 
++    pr_info("Neel: %s: [%s][%d] wiphy_register SUCCESS\n", 
++            __FILE__, __func__, __LINE__);    
++
+ 	debugfs_hw_add(local);
+ 	rate_control_add_debugfs(local);
+ 
+@@ -1311,8 +1321,9 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ 	    !ieee80211_hw_check(hw, NO_AUTO_VIF)) {
+ 		struct vif_params params = {0};
+ 
+-		result = ieee80211_if_add(local, "wlan%d", NET_NAME_ENUM, NULL,
++        result = ieee80211_if_add(local, "wlan%d", NET_NAME_ENUM, NULL,
+ 					  NL80211_IFTYPE_STATION, &params);
++
+ 		if (result)
+ 			wiphy_warn(local->hw.wiphy,
+ 				   "Failed to add default virtual iface\n");
+@@ -1335,6 +1346,8 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ 		goto fail_ifa6;
+ #endif
+ 
++    pr_info("Neel: %s: [%s][%d] [EXIT]\n", __FILE__, __func__, __LINE__);
++
+ 	return 0;
+ 
+ #if IS_ENABLED(CONFIG_IPV6)
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 441136646f89ae7561b37d61ea8fee6ca92408c7..a96c0a096b85670356e29a35e1200b246311e243 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -1339,6 +1339,8 @@ int cfg80211_register_netdevice(struct net_device *dev)
+ 	struct cfg80211_registered_device *rdev;
+ 	int ret;
+ 
++    pr_info("Neel: %s: [%s][%d] [ENTER]\n", __FILE__, __func__, __LINE__);
++
+ 	ASSERT_RTNL();
+ 
+ 	if (WARN_ON(!wdev))
+@@ -1351,12 +1353,22 @@ int cfg80211_register_netdevice(struct net_device *dev)
+ 	/* we'll take care of this */
+ 	wdev->registered = true;
+ 	wdev->registering = true;
++
++    pr_info("Neel: %s: [%s][%d] At this point, the mac80211 device register to netdevice[START].\n", 
++            __FILE__, __func__, __LINE__);
++
+ 	ret = register_netdevice(dev);
+ 	if (ret)
+ 		goto out;
+ 
++    pr_info("Neel: %s: [%s][%d] At this point, the mac80211 device register to netdevice[SUCCESS].\n", 
++            __FILE__, __func__, __LINE__);
++
+ 	cfg80211_register_wdev(rdev, wdev);
+ 	ret = 0;
++
++    pr_info("Neel: %s: [%s][%d] [ENTER]\n", __FILE__, __func__, __LINE__);
++
+ out:
+ 	wdev->registering = false;
+ 	if (ret)
