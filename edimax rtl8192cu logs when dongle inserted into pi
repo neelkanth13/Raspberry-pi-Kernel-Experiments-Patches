@@ -1,0 +1,114 @@
+
+[ 6952.822691] Neel: net/mac80211/driver-ops.c: [drv_stop][41]
+[ 6960.012378] usb 1-1.3: new high-speed USB device number 7 using dwc_otg
+Oct  8 02:12:54 raspberrypi kernel: [ 6952.822691] Neel: net/mac80211/driver-ops.c: [drv_stop][41]
+Oct  8 02:12:54 raspberrypi kernel: [ 6960.012378] usb 1-1.3: new high-speed USB device number 7 using dwc_otg
+[ 6960.163744] usb 1-1.3: New USB device found, idVendor=7392, idProduct=7811, bcdDevice= 2.00
+[ 6960.172239] usb 1-1.3: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[ 6960.179684] usb 1-1.3: Product: 802.11n WLAN Adapter
+[ 6960.184748] usb 1-1.3: Manufacturer: Realtek
+Oct  8 0[ 6960.189105] usb 1-1.3: SerialNumber: 00e04c000001
+2:12:54 raspberrypi kernel: [ 6960.16374[ 6960.197689] Neel: drivers/base/dd.c: [driver_probe_device][806]: bus: 'usb' Attempting to match device 1-1.3:1.0 with driver rtl8192cu..
+4] usb 1[ 6960.210782] Neel: drivers/base/dd.c: [really_probe][574]: bus: 'usb' probing driver rtl8192cu with device 1-1.3:1.0
+-1.3: Ne[ 6960.222078] rtl8192cu: Neel: drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c: [rtl8192cu_probe][373]: rtl8192cu probe callback
+w USB de[ 6960.234584] rtl8192cu: Neel: drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c: [rtl8192cu_probe][375]: Vendor ID: 0x7392 Product ID: 0x7811
+vice fou[ 6960.248260] rtl_usb: 
+[ 6960.248260] 
+[ 6960.248260] ##########################################################
+nd, idVe[ 6960.259372] rtl_usb: Neel: drivers/net/wireless/realtek/rtlwifi/usb.c: [rtl_usb_probe][1015] [ENTER]
+ndor=739[ 6960.269340] rtl_usb: Neel: include/net/mac80211.h: [ieee80211_alloc_hw][4304]
+2, idPro[ 6960.269351] Neel: net/mac80211/main.c: [ieee80211_alloc_hw_nm][552]: Allocate Memory for driver's Private Data
+duct=781[ 6960.288334] rtl8192cu: Chip version 0x10
+1, bcdDevice= 2.00
+Oct  8 02:12:54 raspberrypi kernel: [ 6960.172239] usb 1-1.3: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+Oct  8 02:12:54 raspberrypi kernel: [ 6960.179684] usb 1-1.3: Product: 802.11n WLAN Adapter
+Oct  8 02:12:54 raspberrypi kernel: [ 6960.184748] usb 1-1.3: Manufacturer: Realtek
+Oct  8 02:12:54 raspberrypi kernel: [ 6960.189105] usb 1-1.3: SerialNumber: 00e04c000001
+Oct  8 02:12:54 raspberrypi kernel: [ 6960.197689] Neel: drivers/base/dd.c: [driver_probe_device][806]: bus: 'usb' Attempting to match device 1-1.3:1.0 with driver rtl8192cu..
+Oct  8 [ 6960.344355] rtl8192cu: Board Type 0
+02:12:54[ 6960.348588] rtl_usb: rx_max_size 15360, rx_urb_num 8, in_ep 1
+ raspber[ 6960.355106] rtl8192cu: Loading firmware rtlwifi/rtl8192cufw_TMSC.bin
+rypi ker[ 6960.362182] rtl_usb: Neel: drivers/net/wireless/realtek/rtlwifi/usb.c: [rtl_usb_probe][1080] ieee80211_register_hw [START]
+nel: [ 6[ 6960.362192] Neel: net/mac80211/main.c: [ieee80211_register_hw][918] [ENTER]
+960.2107[ 6960.381908] Neel: net/mac80211/main.c: [ieee80211_register_hw][1304] wiphy_register START
+82] Neel: driver[ 6960.391732] Neel: net/mac80211/main.c: [ieee80211_register_hw][1310] wiphy_register SUCCESS
+s/base/dd.c: [really_probe][574]: bus: '[ 6960.404000] Neel: net/mac80211/iface.c: [ieee80211_if_add][1904] [ENTER]
+usb' pro[ 6960.411128] Neel: net/mac80211/iface.c: [ieee80211_if_add][1941]
+bing dri[ 6960.411170] Neel: net/mac80211/iface.c: [ieee80211_if_setup][1316]
+ver rtl8[ 6960.418033] cfg80211: Neel: net/wireless/core.c: [cfg80211_register_netdevice][1342] [ENTER]
+192cu wi[ 6960.434240] cfg80211: Neel: net/wireless/core.c: [cfg80211_register_netdevice][1357] At this point, the mac80211 device register to netdevice[START].
+th devic[ 6960.448514] Neel: net/core/dev.c: [register_netdevice][10226] [START]
+e 1-1.3:1.0
+Oct[ 6960.455753] Neel: net/core/dev.c: [register_netdevice][10250]: Device Name: wlan1
+  8 02:1[ 6960.456533] Neel: net/core/dev.c: [register_netdevice][10378]: Net Device Registration Complete
+2:54 ras[ 6960.474301] Neel: net/core/dev.c: [register_netdevice][10380] [END]
+pberrypi[ 6960.481344] cfg80211: Neel: net/wireless/core.c: [cfg80211_register_netdevice][1364] At this point, the mac80211 device register to netdevice[SUCCESS].
+ kernel:[ 6960.495890] cfg80211: Neel: net/wireless/core.c: [cfg80211_register_netdevice][1370] [ENTER]
+ [ 6960.[ 6960.505092] Neel: net/mac80211/iface.c: [ieee80211_if_add][2082] [EXIT]
+222078] [ 6960.512498] Neel: net/mac80211/main.c: [ieee80211_register_hw][1349] [EXIT]
+rtl8192c[ 6960.520249] rtl_usb: Neel: drivers/net/wireless/realtek/rtlwifi/usb.c: [rtl_usb_probe][1089] ieee80211_register_hw (Soft mac80211 (rtlwifi) HW Registration) [SUCCESS]
+u: Neel:[ 6960.520257] rtl_usb: Neel: drivers/net/wireless/realtek/rtlwifi/usb.c: [rtl_usb_probe][1097] [EXIT]
+ drivers[ 6960.545910] rtl_usb: ##########################################################
+[ 6960.545910] 
+/net/wir[ 6960.555528] Neel: drivers/base/dd.c: [call_driver_probe][519]: bus: 'usb' matched device 1-1.3:1.0 with driver rtl8192cu
+[ 6960.555528] At this point, invoke the registered probe callback of the driver
+eless/re[ 6960.574572] Neel: drivers/base/dd.c: [__driver_probe_device][778]: bus: 'usb' matched device 1-1.3:1.0 with driver rtl8192cu
+altek/rtlwifi/rtl8192cu/sw.c: [rtl8192cu_probe][373]: rtl8192cu probe callback
+Oct  8 02:12:54 raspberrypi kernel: [ 6960.234584] rtl8192cu: Neel: drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c: [rtl8192cu_probe][375]: Vendor ID: 0x7392 Product ID: 0x7811
+Oct  8 02:12:54 raspberrypi kernel: [ 6960.248260] rtl_usb: 
+Oct  8 02:12:54 raspberrypi kernel: [ 6960.248260] 
+Oct  8 02:12:54 raspberrypi kernel: [ 6960.248260] ##########################################################
+Oct  8 02:12:54 raspberrypi kernel: [ 6960.259372] rtl_usb: Neel: drivers/net/wireless/realtek/rtlwifi/usb.c: [rtl_usb_probe][1015] [ENTER]
+Oct  8 02:12:54 raspberrypi kernel: [ 6960.269340] rtl_usb: Neel: include/net/mac80211.h: [ieee80211_alloc_hw][4304]
+Oct  8 02:12:54 raspberrypi kernel: [ 6960.269351] Neel: net/mac80211/main.c: [ieee80211_alloc_hw_nm][552]: Allocate Memory for driver's Private Data
+Oct  8 02:12:54 raspberrypi kernel: [ 6960.288334] rtl8192cu: Chip version 0x10
+Oct  8 02:12:54 raspberrypi kernel: [ 6960.344355] rtl8192cu: Board Type 0
+Oct  8 02:12:54 raspberrypi kernel: [ 6960.348588] rtl_usb: rx_max_size 15360, rx_urb_num 8, in_ep 1
+Oct  8 02:12:54 raspberrypi kernel: [ 6960.355106] rtl8192cu: Loading firmware rtlwifi/rtl8192cufw_TMSC.bin
+Oct  8 02:12:54 raspberrypi kernel: [ 6960.362182] rtl_usb: Neel: drivers/net/wireless/realtek/rtlwifi/usb.c: [rtl_usb_probe][1080] ieee80211_register_hw [START]
+Oct  8 02:12:54 raspberrypi kernel: [ 6960.362192] Neel: net/mac80211/main.c: [ieee80211_register_hw][918] [ENTER]
+Oct  8 02:12:54 raspberrypi kernel: [ 6960.381895] ieee80211 phy3: Selected rate control algorithm 'rtl_rc'
+Oct  8 02:12:54 raspberrypi kernel: [ 6960.381908] Neel: net/mac80211/main.c: [ieee80211_register_hw][1304] wiphy_register START
+Oct  8 02:12:54 raspberrypi kernel: [ 6960.391732] Neel: net/mac80211/main.c: [ieee80211_regist[ 6960.751653] Neel: net/mac80211/iface.c: [ieee80211_do_open][1043]
+er_hw][1[ 6960.751674] Neel: net/mac80211/driver-ops.c: [drv_start][14]
+310] wiphy_register SUCC[ 6960.758390] Neel: net/mac80211/driver-ops.c: [drv_start][26]
+ESS
+Oct[ 6960.766629] rtl8192cu: MAC auto ON okay!
+  8 02:12:54 raspberrypi kernel: [ 6960.404000] Neel: net/mac80211/iface.c: [ieee80211_if_add][1904] [ENTER]
+Oct  8 02:12:54 raspberrypi kernel: [ 6960.411128] Neel: net/mac80211/iface.c: [ieee80211_if_add][1941]
+O[ 6960.795826] rtl8192cu: Tx queue select: 0x05
+ct  8 02:12:54 raspberrypi kernel: [ 6960.411170] Neel: net/mac80211/iface.c: [ieee80211_if_setup][1316]
+Oct  8 02:12:54 raspberrypi kernel: [ 6960.418033] cfg80211: Neel: net/wireless/core.c: [cfg80211_register_netdevice][1342] [ENTER]
+Oct  8 02:12:54 raspberrypi kernel: [ 6960.434240] cfg80211: Neel: net/wireless/core.c: [cfg80211_register_netdevice][1357] At this point, the mac80211 device register to netdevice[START].
+Oct  8 02:12:54 raspberrypi kernel: [ 6960.448514] Neel: net/core/dev.c: [register_netdevice][10226] [START]
+Oct  8 02:12:54 raspberrypi kernel: [ 6960.455753] Neel: net/core/dev.c: [register_netdevice][10250]: Device Name: wlan1
+Oct  8 02:12:54 raspberrypi kernel: [ 6960.456533] Neel: net/core/dev.c: [register_netdevice][10378]: Net Device Registration Complete
+Oct  8 02:12:55 raspberrypi kernel: [ 6960.474301] Neel: net/core/dev.c: [register_netdevice][10380] [END]
+Oct  8 02:12:55 raspberrypi kernel: [ 6960.481344] cfg80211: Neel: net/wireless/core.c: [cfg80211_register_netdevice][1364] At this point, the mac80211 device register to netdevice[SUCCESS].
+Oct  8 02:12:55 raspberrypi kernel: [ 6960.495890] cfg80211: Neel: net/wireless/core.c: [cfg80211_register_netdevice][1370] [ENTER]
+Oct  8 02:12:55 raspberrypi kernel: [ 6960.505092] Neel: net/mac80211/iface.c: [ieee80211_if_add][2082] [EXIT]
+Oct  8 02:12:55 raspberrypi kernel: [ 6960.512498] Neel: net/mac80211/main.c: [ieee80211_register_hw][1349] [EXIT]
+Oct  8 02:12:55 raspberrypi kernel: [ 6960.520249] rtl_usb: Neel: drivers/net/wireless/realtek/rtlwifi/usb.c: [rtl_usb_probe][1089] ieee80211_register_hw (Soft mac80211 (rtlwifi) HW Registration) [SUCCESS]
+Oct  8 02:12:55 raspberrypi kernel: [ 6960.520257] rtl_usb: Neel: drivers/net/wireless/realtek/rtlwifi/usb.c: [rtl_usb_probe][1097] [EXIT]
+Oct  8 02:12:55 raspberrypi kernel: [ 6960.545910] rtl_usb: ##########################################################
+Oct  8 02:12:55 raspberrypi kernel: [ 6960.545910] 
+Oct  8 02:12:55 raspberrypi kernel: [ 6960.555528] Neel: drivers/base/dd.c: [call_driver_probe][519]: bus: 'usb' matched device 1-1.3:1.0 with driver rtl8192cu
+Oct  8 02:12:55 raspberrypi kernel: [ 6960.555528] At this point, invoke the registered probe callback of the driver
+Oct  8 02:12:55 raspberrypi kernel: [ 6960.574572] Neel: drivers/base/dd.c: [__driver_probe_device][778]: bus: 'usb' matched device 1-1.3:1.0 with driver rtl8192cu
+Oct  8 02:12:55 raspberrypi kernel: [ 6960.751653] Neel: net/mac80211/iface.c: [ieee80211_do_open][1043]
+Oct  8 02:12:55 raspberrypi kernel: [ 6960.751674] Neel: net/mac80211/driver-ops.c: [drv_start][14]
+Oct  8 02:12:55 raspberrypi kernel: [ 6960.758390] Neel: net/mac80211/driver-ops.c: [drv_start][26]
+Oct  8 02:12:55 raspberrypi kernel: [ 6960.766629] rtl8192cu: MAC auto ON okay!
+Oct  8 02:12:55 raspberrypi kernel: [ 6960.795826] rtl8192cu: Tx queue select: 0x05
+[ 6961.577453] Neel: net/mac80211/driver-ops.c: [drv_add_interface][63]
+Oct  8 02:12:56 raspberrypi kernel: [ 6961.577453] Neel: net/mac80211/driver-ops.c: [drv_add_interface][63]
+[ 6961.577501] rtlwifi: Neel: drivers/net/wireless/realtek/rtlwifi/core.c: [rtl_op_add_interface][218]
+Oct  8 02:12:56 raspberrypi kernel: [ 6961.577501] rtlwifi: Neel: drivers/net/wireless/realtek/rtlwifi/core.c: [rtl_op_add_interface][218]
+
+
+[ 6961.599146] Neel: net/mac80211/iface.c: [ieee80211_open][365]
+[ 7013.597111] w1_master_driver w1_bus_master1: Attaching one wire slave 00.610000000000 crc 3b
+Oct  8 02:13:48 raspberrypi kernel: [ 6961.599146] Neel: net/mac80211/iface.c: [ieee80211_open][365]
+Oc[ 7013.621721] w1_master_driver w1_bus_master1: Family 0 for 00.610000000000.3b is not registered.
+t  8 02:13:48 raspberrypi kernel: [ 7013.597111] w1_master_driver w1_bus_master1: Attaching one wire slave 00.610000000000 crc 3b
+Oct  8 02:13:48 raspberrypi kernel: [ 7013.621721] w1_master_driver w1_bus_master1: Family 0 for 00.610000000000.3b is not registered.
